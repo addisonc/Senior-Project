@@ -54,6 +54,121 @@ Addison Cugini
 05/27/2011
 \end_layout
 
+\begin_layout Abstract
+Sympy is a CAs tool .
+ blah blah
+\end_layout
+
+\begin_layout Part
+Introduction
+\end_layout
+
+\begin_layout Part
+Python and Sympy
+\end_layout
+
+\begin_layout Standard
+Python is a high level programming language that aims to be easy to use
+ and easy to learn.
+ The language supports multiple programming paradigms including functional,
+ imperative and object oriented; both functions and classes are considered
+ first class citizens.
+ In contrast to Perl's credo 
+\begin_inset Quotes eld
+\end_inset
+
+There is more than one way to do it
+\begin_inset Quotes erd
+\end_inset
+
+, The Zen of Python asserts 
+\begin_inset Quotes eld
+\end_inset
+
+There should be one--and preferably only one--obvious way to do it
+\begin_inset Quotes erd
+\end_inset
+
+.
+ In this way, Python aims to be easy to read and learn by providing only
+ one obvious way to solve a particular task (Perl is infamous for requiring
+ people to learn too many programming techniques).
+\end_layout
+
+\begin_layout Standard
+Keeping with its simplicity, Python is an interactive interpreted language,
+ which means that code does not need to be compiled and can be typed directly
+ into an interpreter.
+ In addition to the basic command line Python interpretor, a third-party
+ open-source package called iPython adds shell functionality.
+ This includes the such basic functionality as changing directories, running
+ files, listing files in a directory, as well as more advanced features
+ such as tab completion and a history of commands run.
+ The most bleeding edge versions of iPython allow for rendering of the common
+ typesetting languages LaTex and HTML.
+ These features create an enviorment that makes it easy to test code.
+\end_layout
+
+\begin_layout Standard
+Python has several modules which provide functionality that is useful for
+ mathematics and scientific computing.
+ Fast numerical algorithms are supplied by the scipy and numpy modules,
+ which implement speed nearly as good as hand-written C through compiled
+ code for matrix and array operations.
+ These modules are competitors to Matlab with the advantage of being written
+ by someone competent in language design.
+ Sympy is a computer algebra system which hopes to compete with well established
+ symbolic engines such as Mathematica, Maple or Maxima.
+ Features include support for algebraic simplifications, ODE solving, integratio
+n (the Risch Algorithm is partially implemented), linear algebra and more.
+ 
+\end_layout
+
+\begin_layout Standard
+Sympy's symbolic engine takes advantage of object orientation (and inheritance
+ in particular) to create an easily extensible code base.
+ All classes derive features, such as the ability to compare itself with
+ other objects, from methods in the 'Basic' superclass.
+ Objects which can be acted upon by algebraic operations gain this ability
+ through a set of methods in a class called 'Expr'.
+ These Expr objects can be held in container objects (which also subclass
+ Expr) such as Mul, Add and Pow; the objects are instantiated using Python's
+ operator overloading feature which allows the constructor of the container
+ class to be called whenever the appropriate binary operator is used (*
+ for Mul, + for Add, and ** for Pow).
+ The following is an inheritance diagram which shows some important classes:
+ 
+\end_layout
+
+\begin_layout Standard
+In this way, additional objects can be added by simply creating a subclass
+ which inherits features from the Expr class.
+ These subclasses get for free certain features such as the ability to be
+ compared, multiplied, added, etc.
+ Herein is how Sympy creates a maintainable, easy to extend enviornment.
+ 
+\end_layout
+
+\begin_layout Part
+General Quantum Mechanics in Sympy
+\end_layout
+
+\begin_layout Standard
+Sympy has a base module which provides functionality for symbolic quantum
+ mechanics in Dirac notation.
+ The base class for this module is QExpr which inherits from Expr and provides
+ some features unique to quantum mechanics to all base classes.
+ 
+\end_layout
+
+\begin_layout Standard
+A look at the inheritance diagram:
+\end_layout
+
+\begin_layout Part
+Quantum Computation in Sympy
+\end_layout
+
 \begin_layout Part
 Density Operator Formalism
 \end_layout
@@ -95,6 +210,7 @@ psi_{n}>$
 status open
 
 \begin_layout Plain Layout
+
 $W_{n}$
 \end_layout
 
@@ -105,12 +221,10 @@ $W_{n}$
 status open
 
 \begin_layout Plain Layout
+
 $
 \backslash
-sum
-_{n}
-\lang english
- W_{n} = 1$
+sum_{n} W_{n} = 1$
 \end_layout
 
 \end_inset
@@ -142,6 +256,7 @@ psi_{n}|$
 status open
 
 \begin_layout Plain Layout
+
 $|
 \backslash
 psi_{n}>$
@@ -356,8 +471,26 @@ s eigenvalues.
  This can be seen in the following code example:
 \end_layout
 
+\begin_layout Part
+Conlclusions and Future Directions
+\end_layout
+
+\begin_layout Standard
+Stuff summing up what the code does and why it is useful.
+\end_layout
+
+\begin_layout Standard
+The code that has been added to Sympy provides many useful bit of functionality,
+ but the possible additions that could be made are nearly limitless.
+ 
+\end_layout
+
 \begin_layout Standard
 \start_of_appendix
+Appendix A
+\end_layout
+
+\begin_layout Standard
 Proof that 1 is the only non-zero eigenvalue for a pure state:
 \end_layout
 

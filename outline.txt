@@ -1,0 +1,32 @@
+This is an outline of my senior project, with timeline.
+
+I. Introduction (Finish by 4/29)
+    a. Description of Sympy
+    b. General description of Quantum Computation
+    c. Motivation for project
+
+II. Overview of General Quantum Capabilities (Finish by 5/6)
+    a. Review of Bra-Ket notation
+    b. How Bra-ket notation is dealt with in Sympy
+    c. How representation and apply are dealt with  
+    
+II. Basic Quantum Computation Capabilities of Module (Finish by 5/13)
+    a. Relevant Mathematics
+    b. Inheritance diagram and description
+    b. Underlying data structure and implementation
+    c. Description of apply and represent functions
+    d. Code Examples
+    
+III. Shor's Algorithm (Finish by 5/20)
+    a. Quantum Computation order finding subroutine
+    b. Using order to factor numbers
+    c. Implementation in Sympy (Bringing this all together)
+
+IV. Density Operators (Finish by 5/27)
+    a. Mathematics of Density Operators
+    b. Density Operator data structure and implementation in Sympy
+    c. Density Operator Examples
+    d? Entropy and Entanglement measures?
+    
+V. Conclusion (Finish by 5/27)
+    a. Possible future projects
