@@ -55,12 +55,34 @@ Addison Cugini
 \end_layout
 
 \begin_layout Abstract
-Sympy is a CAs tool .
- blah blah
+Because aspects of quantum mechanics are both difficult to understand and
+ difficult algebraically, there is a need for software which symbolically
+ .
+ This paper shall discuss the code that has been added to a python-based
+ CAS Sympy which 
 \end_layout
 
 \begin_layout Part
 Introduction
+\end_layout
+
+\begin_layout Standard
+Students unfamiliar with quantum mechanics oftentimes find themselves getting
+ lost in arithemetic and algebraic details and consequently have a hard
+ time grasping the fundamental concepts behind the theory.
+ For this reason, there is a need for software which simplifies the process
+ by doing much of the meticulous algebra for the user.
+ There is no doubt that a symbolic engine would be highly useful for attaining
+ this goal.
+\end_layout
+
+\begin_layout Standard
+This paper shall discuss the quantum mechanics simulation code that has
+ been added to the CAS Sympy during the 2010 Google Summer of Code and during
+ my senior project.
+ Code has been added which uses Dirac notation to simulate quantum computing
+ and the density operator.
+ These modules, as well as the underlying physical threories, shall be discussed.
 \end_layout
 
 \begin_layout Part
@@ -70,9 +92,9 @@ Python and Sympy
 \begin_layout Standard
 Python is a high level programming language that aims to be easy to use
  and easy to learn.
- The language supports multiple programming paradigms including functional,
- imperative and object oriented; both functions and classes are considered
- first class citizens.
+ To further this aim, the language supports multiple programming paradigms
+ including functional, imperative and object oriented; both functions and
+ classes are considered first class citizens.
  In contrast to Perl's credo 
 \begin_inset Quotes eld
 \end_inset
@@ -107,16 +129,18 @@ Keeping with its simplicity, Python is an interactive interpreted language,
  The most bleeding edge versions of iPython allow for rendering of the common
  typesetting languages LaTex and HTML.
  These features create an environment that makes it easy to test code.
+ All code examples contain in this document were created using this version
+ of iPython.
 \end_layout
 
 \begin_layout Standard
 Python has several modules which provide functionality that is useful for
  mathematics and scientific computing.
- Fast numerical algorithms are supplied by the Scipy and Numpy modules,
- which implement speed nearly as good as hand-written C through compiled
- code for matrix and array operations.
- These modules are competitors to Matlab with the advantage of being written
- by someone competent in language design.
+ Fast numerical algorithms on matrices and arrays are supplied by the Scipy
+ and Numpy modules, which have run times nearly as fast as hand-written
+ C/C++ code.
+ These modules are competitors to Matlab with the advantage of using a much
+ more manageable programming language.
  Sympy is a computer algebra system which hopes to compete with well established
  symbolic engines such as Mathematica, Maple or Maxima.
  Features include support for algebraic simplifications, ODE solving, integratio
@@ -149,8 +173,8 @@ In this way, additional objects can be added by simply creating a subclass
  to extend enviornment.
  Inheritance is magic.
  With the ability to inherit properties from higher classes, the amount
- of code required to develop a system which models quantum mechanics and
- Dirac notation decreases significantly.
+ of code required to develop, for example, a system which models quantum
+ mechanics and Dirac notation decreases significantly.
 \end_layout
 
 \begin_layout Part
@@ -224,7 +248,8 @@ There is a need to provide software packages which simulate quantum computation
 \begin_layout Standard
 As stated earlier, qubit objects are the state of interest for a quantum
  computer.
- In Sympy, these states are implemented by inheriting...
+ In Sympy, these states are implemented by inheriting characteristics from
+ ...
  Gate objects are implemented by inheriting...A method that knows how to apply
  a gate to a qubit object can be found in the generic gate superclass, with
  this bit of code a user need only specify what the matrix for a gate looks
@@ -246,10 +271,6 @@ The quantum fourier transform (QFT) is a transformation that is the key
  module in action:
 \end_layout
 
-\begin_layout Standard
-Shor's algorithm description?
-\end_layout
-
 \begin_layout Part
 Density Operator Formalism in Sympy
 \end_layout
@@ -259,9 +280,9 @@ In real situations found in the lab, an experimentalist cannot know with
  certainty what state a system is in.
  Students of quantum mechanics tend to focus on how a well known state vector
  of a system evolves.
- If the quantum state is not completely known beforehand, that is if there
- is a certain classical uncertainty as to what state a system is in, the
- density operator formalism more naturally describes the system.
+ If the quantum state is not completely known, that is if there is a certain
+ classical uncertainty as to what state a system is in, the density operator
+ formalism more naturally describes the system.
  In this way, the density operator is useful for modeling systems where
  both classical uncertainty and quantum superpositions are present.
  This is useful for real systems in which the whole history of a system
@@ -551,6 +572,174 @@ s eigenvalues.
  The eigenvalues are then plugged into the equation for the Von Neumann
  entropy.
  This can be seen in the following code example:
+\end_layout
+
+\begin_layout Subsection
+The Reduced Density Matrix
+\end_layout
+
+\begin_layout Standard
+Any student of quantum mechanics is aware of the definiton of an entangled
+ state is a state for which the consituent subsystems cannot be separated.
+ That is a state 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+Psi >$
+\end_layout
+
+\end_inset
+
+ with constituent systems 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+theta >$
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+phi >$
+\end_layout
+
+\end_inset
+
+ is entangled if and only if it is impossible to write 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+psi > = | 
+\backslash
+phi > 
+\backslash
+otimes | 
+\backslash
+theta >$
+\end_layout
+
+\end_inset
+
+.
+ If this condition is not met, then the system is said to be in a seperable
+ or unentangled state.
+ If however we wish to provide a statistical account of the state of a subsystem
+, the density operator provides a useful framework through an object called
+ the reduced density matrix.
+\end_layout
+
+\begin_layout Standard
+Consider the arbitrary state 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+Phi >$
+\end_layout
+
+\end_inset
+
+ with subsystems 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+phi> $
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+theta >$
+\end_layout
+
+\end_inset
+
+.
+ Now, say that we only really care about the state of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+phi >$
+\end_layout
+
+\end_inset
+
+.
+ We can describe the state of the system 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+rho_{reduced} = <
+\backslash
+sum
+\backslash
+limits_i $
+\end_layout
+
+\end_inset
+
+.
+ This is known as the reduced density matrix.
+ 
+\end_layout
+
+\begin_layout Standard
+The partial trace of an entangled state can be thought of as us 'forgetting'
+ information about one of the qubits.
+ This strange way of thinking of the partial trace is correct when one looks
+ at the increase in entropy that occurs when we preform this operation.
+ 
+\end_layout
+
+\begin_layout Standard
+This concept sets up the framework for our understanding of decoherence.
+ Decoherence is what occurs when a quantum superposition interacts with
+ and becomes entangled with an unknown enviorment; this results in the non-unita
+ry transformation of quantum superpositions into classical mixtures.
+ Mathematically, this manifests itself as a spontaneous diagonalization
+ of the density matrix.
+ In the previous example, when we 
 \end_layout
 
 \begin_layout Part
