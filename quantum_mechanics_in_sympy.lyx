@@ -580,7 +580,8 @@ The Reduced Density Matrix
 
 \begin_layout Standard
 Any student of quantum mechanics is aware of the definiton of an entangled
- state is a state for which the consituent subsystems cannot be separated.
+ state as a state for which the consituent subsystems cannot be factored
+ out.
  That is a state 
 \begin_inset ERT
 status open
@@ -620,7 +621,7 @@ phi >$
 
 \end_inset
 
- is entangled if and only if it is impossible to write 
+ is entangled (unseperable) if and only if it is impossible to write 
 \begin_inset ERT
 status open
 
@@ -642,9 +643,11 @@ theta >$
 .
  If this condition is not met, then the system is said to be in a seperable
  or unentangled state.
+ For this entangled state, it is impossible to describe the entangled subsystem
+ on its own without the loss of information.
  If however we wish to provide a statistical account of the state of a subsystem
-, the density operator provides a useful framework through an object called
- the reduced density matrix.
+, the density operator provides a useful framework in the form of an object
+ called the reduced density matrix.
 \end_layout
 
 \begin_layout Standard
@@ -702,7 +705,7 @@ phi >$
 \end_inset
 
 .
- We can describe the state of the system 
+ We can describe the state of the subsystem by the reduced density 
 \begin_inset ERT
 status open
 
@@ -710,36 +713,180 @@ status open
 
 $
 \backslash
-rho_{reduced} = <
+rho_{reduced}$
+\end_layout
+
+\end_inset
+
+, where the elements of the matrix are determined by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$ < 
+\backslash
+theta 
+\backslash
+phi_{j} | 
+\backslash
+rho_{reduced} | 
+\backslash
+theta 
+\backslash
+phi_{j'} > = 
 \backslash
 sum
 \backslash
-limits_i $
+limits_i < 
+\backslash
+theta_{i} 
+\backslash
+phi_{j} | 
+\backslash
+rho_{reduced} | 
+\backslash
+theta_{i} 
+\backslash
+phi_{j'} > $
 \end_layout
 
 \end_inset
 
 .
- This is known as the reduced density matrix.
+ Alternatively, we can describe the reduced density matrix in term of something
+ called a partial trace 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+rho_{reduced} = tr_{
+\backslash
+phi} 
+\backslash
+Phi$
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The big ugly sum describing the reduced density matrix is doubtlessly a
+ pain to calculate (determining the reduced density matrix for even a Bell
+ state requires the addition of eight numbers).
+ Fortunately, I have added code to the density operator module which can
+ calculate the reduced density matrix of a tensor product of two-state systems
+ by specifying which bits are to be considered the unobserved bits.
+ This can be seen below:
+\end_layout
+
+\begin_layout Standard
+The operation seen above is intresting in that we went irreversiblly from
+ a pure entangled Bell state with zero entropy to a mixed state with non-zero
+ entropy.
+ In this way, the partial trace of an entangled state can be thought of
+ as us 'forgetting' information about one of the qubits and thus increasing
+ the entropy.
+ This will generally occur whenever a partial trace is preformed on two
+ entangled states.
+ It is thusly apparent that the Louiville theorem discussed in the previous
+ section does not generally apply to the partial trace operation as entropy
+ is not conserved.
  
 \end_layout
 
 \begin_layout Standard
-The partial trace of an entangled state can be thought of as us 'forgetting'
- information about one of the qubits.
- This strange way of thinking of the partial trace is correct when one looks
- at the increase in entropy that occurs when we preform this operation.
- 
-\end_layout
-
-\begin_layout Standard
-This concept sets up the framework for our understanding of decoherence.
+This shows us that a pure entangled state can appear to be a mixed unentangled
+ state when we do not have information about one of the entangled systems.
+ This concept sets up the framework for our understanding of decoherence.
  Decoherence is what occurs when a quantum superposition interacts with
- and becomes entangled with an unknown enviorment; this results in the non-unita
-ry transformation of quantum superpositions into classical mixtures.
+ (and becomes entangled with) an unknown enviorment; this entanglement results
+ in what appears to be the non-unitary transformation of quantum superpositions
+ into classical mixtures.
  Mathematically, this manifests itself as a spontaneous diagonalization
  of the density matrix.
- In the previous example, when we 
+ Decoherence forms the classical/quantum barrier as this is where the wierd
+ effects of superposition and intereference come to die.
+ (the reader should note that decoherence theory does not by itself solve
+ the so called 'measurement problem' of quantum mechanics because measurement
+ results in a definite state rather than a mixed state; we are still left
+ with the question of why and when the quantum state collapsed into a pure
+ definite state.
+ For one interpretation of decoherence see Rolland Omes, The interpretation
+ of Quantum Mechanics).
+ 
+\end_layout
+
+\begin_layout Subsection
+Entropy of Entanglement
+\end_layout
+
+\begin_layout Standard
+A wise and observant reader may have noticed that there is a very strong
+ correlation between the entropy of the reduced density matrix and the entanglem
+ent of the system.
+ After all, the maximally entangled Bell state also produced a mixed state
+ of maximal entropy under the partial trace operation.
+ This observation leads to the definition of an entanglement measure called
+ the 'entropy of entanglement'.
+ This measure defines the entanglement of two subsystems of 
+the state
+\lang english
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$| 
+\backslash
+Psi >$
+\end_layout
+
+\end_inset
+
+, A and B, to be the entropy of the partial trace of the system.
+ Thus:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$Entanglement( | 
+\backslash
+Psi >) = S(tr_{A} | 
+\backslash
+Psi > < 
+\backslash
+Psi |) = S(tr_{B} | 
+\backslash
+Psi > < 
+\backslash
+Psi |) $
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We have thus added a small bit of functionality to the code which determines
+ the entropy of entanglement between any specified qubit and the system
+ as a whole.
+ This is seen below
+\end_layout
+
+\begin_layout Standard
+http://qwiki.stanford.edu/index.php/Entropy_of_Entanglement
 \end_layout
 
 \begin_layout Part
