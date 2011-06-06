@@ -171,8 +171,12 @@ n (the Risch Algorithm is partially implemented), linear algebra and more.
 
 \begin_layout Standard
 What follows is a short demonstration of the general symbolic capabilities
- of Sympy.
- This is done so that the reader can understand the clear syntax Sympy provides.
+ of Sympy rendered in the bleeding edge version of iPython.
+ All code was attained by screen-grabbing the input-output of the iPython
+ notebook; there is no magic and no trickery, the notebook actually renders
+ LaTeX code.
+ This example is done so that the reader can understand the clear syntax
+ Sympy provides.
 \end_layout
 
 \begin_layout Standard
@@ -285,7 +289,20 @@ The base class for this module is QExpr which inherits from Expr and provides
 \end_layout
 
 \begin_layout Standard
-Code example:
+The following is a code example, which shows some of the capabilities of
+ the module:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename Pictures/genQuantum.png
+	width 5.5in
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Part
@@ -321,12 +338,16 @@ There is a need to provide software packages which simulate quantum computation
 As stated earlier, qubit objects are the state of interest for a quantum
  computer.
  In Sympy, these states are implemented by inheriting characteristics from
- ...
- Gate objects are implemented by inheriting...A method that knows how to apply
- a gate to a qubit object can be found in the generic gate superclass, with
- this bit of code a user need only specify what the matrix for a gate looks
- like in order to operate on a state without first representing the gate
- as a matrix in its full basis.
+ the State superclass and then teaching the qubit object how to print and
+ represent itself as a matrix.
+ Gate objects are implemented by inheriting properties from Operator and
+ then teaching the gate class how to print, represent itself as a matrix,
+ and apply itself to a qubit.
+ Specific examples of quantum gates (e.g.
+ Hadamard, Not, Controlled-Not, et cetera) are implemented by subclassing
+ the generic Gate class and defining an associated matrix.
+ The apply function works by looking at this matrix and applying it to a
+ state without first representing the gate as a matrix in its full basis.
  
 \end_layout
 
