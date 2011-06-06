@@ -20,12 +20,16 @@
 \spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_amsmath 1
 \use_esint 1
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
+\leftmargin 1.5in
+\topmargin 1.5in
+\rightmargin 1.5in
+\bottommargin 1.5in
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation skip
@@ -51,19 +55,22 @@ Addison Cugini
 \end_layout
 
 \begin_layout Date
-05/27/2011
+06/05/2011
 \end_layout
 
 \begin_layout Abstract
 Because aspects of quantum mechanics are both difficult to understand and
  difficult algebraically, there is a need for software which symbolically
  simulates quantum mechanical phenomena.
- To further this goal, code has been added to model the absraction of Dirac
- notation and the density operator.
+ To further this goal, code has been added to an open-source computer algebra
+ system call Sympy which models the abstraction of Dirac notation and the
+ density operator.
  Additionally, a quantum computer simulation has been built using this abstracti
 on.
- This paper shall discuss the code as well as any relevant physics that
- has been added to a python based CAS Sympy.
+ This paper shall discuss the code that has been added as well as any relevant
+ physics that is important to the understanding of the code.
+ In particular, we shall focus on understanding the density operator of
+ statistical quantum mechanics using Sympy's density matrices as a guide.
 \end_layout
 
 \begin_layout Part
@@ -72,8 +79,8 @@ Introduction
 
 \begin_layout Standard
 Students unfamiliar with quantum mechanics oftentimes find themselves getting
- lost in arithemetic and algebraic details and consequently have a hard
- time grasping the fundamental concepts behind the theory.
+ lost in arithmetic and algebraic details and consequently have a hard time
+ grasping the fundamental concepts behind the theory.
  For this reason, there is a need for software which simplifies the learning
  process by doing much of the meticulous algebra for the user.
  There is no doubt that a symbolic engine would be highly useful for attaining
@@ -93,8 +100,10 @@ This paper shall discuss the quantum mechanics simulation code that has
  This shall include a general introduction to the syntax and data structures
  key to Sympy as well as a look at how this was used to implement Dirac
  notation.
- We shall then look at how this was used to implement a quantum computer
- simulator and a notion of the density operator of statistical quantum mechanics.
+ We shall then look at a notion of Dirac Notation was used to simulate the
+ gate model of quantum computation.
+ Finally, we shall discuss the density operator of statistical quantum mechanics
+ and how we recently extended the code to model its use.
 \end_layout
 
 \begin_layout Part
@@ -161,22 +170,53 @@ n (the Risch Algorithm is partially implemented), linear algebra and more.
 \end_layout
 
 \begin_layout Standard
-Sympy's symbolic engine takes advantage of object orientation (and inheritance
+What follows is a short demonstration of the general symbolic capabilities
+ of Sympy.
+ This is done so that the reader can understand the clear syntax Sympy provides.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename Pictures/generalSympy.png
+	width 6in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Structures in Sympy
+\end_layout
+
+\begin_layout Standard
+Sympy's symbolic engine takes advantage of object orientation (inheritance
  in particular) to create an easily extensible code base.
  All classes derive features, such as the ability to compare itself with
  other objects, from methods in the 'Basic' super-class.
  Objects which can be acted upon by algebraic operations gain this ability
  through a set of methods in a class called 'Expr'.
  These Expr objects can be held in container objects (which also subclass
- Expr) such as Mul, Add and Pow; the objects are instantiated using Python's
- operator overloading feature which allows the constructor of the container
- class to be called whenever the appropriate binary operator is used (*
- for Mul, + for Add, and ** for Pow).
- The following is an inheritance diagram which shows some important classes:
+ Expr) such as Mul, Add and Pow; the container objects are instantiated
+ using Python's operator overloading feature which allows the constructor
+ of the container class to be called whenever the appropriate binary operator
+ is used (* for Mul, + for Add, and ** for Pow).
  
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/sympy_inheritance.pdf
 	width 4in
@@ -184,12 +224,16 @@ Sympy's symbolic engine takes advantage of object orientation (and inheritance
 \end_inset
 
 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Sympy's inheritance diagram including some of the important classes.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Graphics
-	filename Pictures/generalSympy.png
-	width 5.1in
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -202,7 +246,7 @@ In this way, additional objects can be added by simply creating a subclass
  These subclasses get for free certain features such as the ability to be
  compared, multiplied, added, etc.
  Herein is how Sympy creates a maintainable, modular and therefore easy
- to extend enviornment.
+ to extend environment.
  Inheritance is magic.
  With the ability to inherit properties from higher classes, the amount
  of code required to develop, for example, a system which models quantum
@@ -226,7 +270,7 @@ Sympy has a base module which provides functionality for symbolic quantum
  Code also exists within a function called qapply which can apply operators
  to states as well as evaluate inner products based on orthogonality rules.
  Using these bits of code as a base, code has been created which models
- Hilbert space rotations, second quantization, continous cartesian systems
+ Hilbert space rotations, second quantization, continuous Cartesian systems
  and quantum computation with more systems being added.
  In this way, the code has the ability to represent quantum systems in Dirac
  notation as well as preform many elementary operations on these quantum
@@ -241,10 +285,6 @@ The base class for this module is QExpr which inherits from Expr and provides
 \end_layout
 
 \begin_layout Standard
-A look at the inheritance diagram:
-\end_layout
-
-\begin_layout Standard
 Code example:
 \end_layout
 
@@ -253,12 +293,12 @@ Quantum Computation in Sympy
 \end_layout
 
 \begin_layout Standard
-Quantum computation is an emerging field which promises to exploit the quantum
+Quantum computation is an emerging field which promises to exploit quantum
  effects (such as superpositions, entanglement, and interference) to create
  algorithms with faster asymptotic run times than what is possible with
  known classical algorithms.
- The field is of intrest to individuals across many fields including mathematics
-, computer science and physics.
+ The field is of interest to individuals across many fields including mathematic
+s, computer science and physics.
 \end_layout
 
 \begin_layout Standard
@@ -266,14 +306,14 @@ There is a need to provide software packages which simulate quantum computation
  for the purpose of teaching.
  For this reason, the general quantum package has been extended to include
  a quantum computing simulator.
- This includes a notion of qubit objects (which are the states of intrest
+ This includes a notion of qubit objects (which are the states of interest
  to quantum computing), and the gate objects which operate on the states.
  Many of the most well known quantum algorithms have been implemented using
  this extension including the quantum Fourier transform, Shor's order-finding
  algorithm, and Grover's brute-force search algorithm.
  With these example algorithms, someone new to the field can quickly get
  a sense for how a quantum computer would exploit quantum effects to produce
- asymptotic speed-ups over known classical algorithms.
+ speed-ups over known classical algorithms.
  
 \end_layout
 
@@ -291,9 +331,11 @@ As stated earlier, qubit objects are the state of interest for a quantum
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/compute1.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -301,9 +343,11 @@ As stated earlier, qubit objects are the state of interest for a quantum
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/compute2.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -311,9 +355,11 @@ As stated earlier, qubit objects are the state of interest for a quantum
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/compute3.png
-	width 5.1in
+	width 4.5in
 
 \end_inset
 
@@ -321,22 +367,24 @@ As stated earlier, qubit objects are the state of interest for a quantum
 \end_layout
 
 \begin_layout Standard
-The quantum fourier transform (QFT) is a transformation that is the key
+The quantum Fourier transform (QFT) is a transformation that is the key
  part of Shor's number factoring algorithm, which provides an exponential
  speedup for the problem of finding the order of a number.
  The QFT acts exactly like a discrete fourier transform except that it does
  not apply to an incoming array of data, but the state vector of a given
  system.
- A short sequence of gates, which grows polynomially in the number of qubits
- it applies to, is known which implements this transformation.
+ There is a known short sequence of quantum gates (whose length grows polynomial
+ly in the number of qubits it applies to) which implements this transformation.
  To get a sense of how this works, it would be helpful to see the Sympy
  module in action:
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/QFT1.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -344,9 +392,11 @@ The quantum fourier transform (QFT) is a transformation that is the key
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/QFT2.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -360,8 +410,6 @@ Density Operator Formalism in Sympy
 \begin_layout Standard
 In real situations found in the lab, an experimentalist cannot know with
  certainty what state a system is in.
- Students of quantum mechanics tend to focus on how a well known state vector
- of a system evolves.
  If the quantum state is not completely known, that is if there is a certain
  classical uncertainty as to what state a system is in, the density operator
  formalism more naturally describes the system.
@@ -369,6 +417,10 @@ In real situations found in the lab, an experimentalist cannot know with
  both classical uncertainty and quantum superpositions are present.
  This is useful for real systems in which the whole history of a system
  may be impossible to account for.
+ Despite the clear use of density matrices, undergraduate students of quantum
+ mechanics tend to focus on how a well known state vector of a system evolves.
+ For this reason, it would be useful to add code which would model the density
+ matrix.
 \end_layout
 
 \begin_layout Subsection
@@ -400,7 +452,12 @@ $W_{n}$
 
 \end_inset
 
-, such that 
+, such that
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset ERT
 status open
 
@@ -408,14 +465,25 @@ status open
 
 $
 \backslash
-sum_{n} W_{n} = 1$
+sum
+\backslash
+limits_n W_{n} = 1$
 \end_layout
 
 \end_inset
 
- (That is the system is normalized such that it must be in one of the ensemble
+ 
+\end_layout
+
+\begin_layout Standard
+(That is the system is normalized such that it must be in one of the ensemble
  of given states).
  Then the density operator which defines the system is defined by:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset ERT
 status open
 
@@ -425,7 +493,9 @@ $
 \backslash
 rho = 
 \backslash
-sum_{n} W_{n}|
+sum
+\backslash
+limits_n W_{n}|
 \backslash
 psi_{n}><
 \backslash
@@ -435,7 +505,11 @@ psi_{n}|$
 \end_inset
 
 .
- (Note that the states 
+ 
+\end_layout
+
+\begin_layout Standard
+(Note that the states 
 \begin_inset ERT
 status open
 
@@ -448,13 +522,20 @@ psi_{n}>$
 
 \end_inset
 
- need not be orthoganol).
+ need not be orthogonal).
  
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align left
 In a discrete basis, the density operator takes the form of a matrix where
- the i-th and j-th matrix element is determined by the equation: 
+ the i-th and j-th matrix element is determined by the equation:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset ERT
 status open
 
@@ -468,7 +549,9 @@ rho|
 \backslash
 phi_{j}> = 
 \backslash
-sum_{n} W_{n} a_{i}^{n} a_{j}^{n*}$
+sum
+\backslash
+limits_n W_{n} a_{i}^{n} a_{j}^{n*}$
 \end_layout
 
 \end_inset
@@ -485,9 +568,11 @@ Density Operators in Sympy
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/density1.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -495,9 +580,11 @@ Density Operators in Sympy
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/density2.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -509,9 +596,10 @@ Matrix to Dirac Notation for a Density Operator
 \end_layout
 
 \begin_layout Standard
-It is possible to take in a density matrix which represents the state of
- a system and determine a representation as a series of outer products of
- states using the eigenvalues and eigenvectors of the matrix.
+As seen in the previous segment of code, it is possible to take in a density
+ matrix which represents the state of a system and determine a representation
+ as a series of outer products of states using the eigenvalues and eigenvectors
+ of the matrix.
  For a density matrix, 
 \begin_inset ERT
 status open
@@ -551,7 +639,12 @@ psi_{n}>$
 
 \end_inset
 
-, the matrix can be represented as 
+, the matrix can be represented as
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset ERT
 status open
 
@@ -561,7 +654,9 @@ $
 \backslash
 rho = 
 \backslash
-sum_{n} 
+sum
+\backslash
+limits_n 
 \backslash
 lambda_{n} |
 \backslash
@@ -573,7 +668,10 @@ psi_{n}|$
 \end_inset
 
 .
- For a non-pure state the Dirac notation representation is not unique, so
+\end_layout
+
+\begin_layout Standard
+For a non-pure state the Dirac notation representation is not unique, so
  the returned result might not be the same set of states as one may expect.
  In Sympy, this is implemented in a separate function 
 \begin_inset Quotes eld
@@ -584,7 +682,6 @@ matrix_to_density
 \end_inset
 
 .
- This is seen in the following code example: 
 \end_layout
 
 \begin_layout Subsection
@@ -634,7 +731,9 @@ status open
 
 $S = -
 \backslash
-sum_{n} 
+sum
+\backslash
+limits_n 
 \backslash
 lambda_{n} log(
 \backslash
@@ -669,7 +768,7 @@ lambda = 1$
 In Sympy, the Von Neumann entropy is implemented for discrete systems using
  a method within the Density class.
  This method determines the eigenvalues of the density matrix by representing
- the operator as a matrix and making calls to the sympy function which determine
+ the operator as a matrix and making calls to the Sympy function which determine
 s eigenvalues.
  The eigenvalues are then plugged into the equation for the Von Neumann
  entropy.
@@ -677,9 +776,11 @@ s eigenvalues.
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/entropy1.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -687,9 +788,27 @@ s eigenvalues.
 \end_layout
 
 \begin_layout Standard
+A student of classical statistical mechanics would no doubt be aware of
+ the Louisville theorem which establishes that any system evolving under
+ a linear Hamiltonian will maintain the same area of uncertainty in the
+ energy-momentum phase space.
+ There is an equivalent form of this theorem for density operators which
+ states that the uncertainty about the state of the system remains the same
+ when evolving under unitary transformations.
+ In other words, a pure state remains pure and a mixed state doesn't become
+ any more or less mixed as it is operated on.
+ One way this mathematically manifests itself is that the entropy of a state
+ remains the same.
+ Unitary operations are isentropic.
+ This is seen below:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/entropy2.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -701,8 +820,8 @@ The Reduced Density Matrix
 \end_layout
 
 \begin_layout Standard
-Any student of quantum mechanics is aware of the definiton of an entangled
- state as a state for which the consituent subsystems cannot be factored
+Any student of quantum mechanics is aware of the definition of an entangled
+ state as a state for which the constituent subsystems cannot be factored
  out.
  That is a state 
 \begin_inset ERT
@@ -743,7 +862,7 @@ phi >$
 
 \end_inset
 
- is entangled (unseperable) if and only if it is impossible to write 
+ is entangled (inseparable) if and only if it is impossible to write 
 \begin_inset ERT
 status open
 
@@ -763,8 +882,8 @@ theta >$
 \end_inset
 
 .
- If this condition is not met, then the system is said to be in a seperable
- or unentangled state.
+ If this condition is not met, then the system is said to be in a separable
+ or entangled state.
  For this entangled state, it is impossible to describe the entangled subsystem
  on its own without the loss of information.
  If however we wish to provide a statistical account of the state of a subsystem
@@ -840,7 +959,12 @@ rho_{reduced}$
 
 \end_inset
 
-, where the elements of the matrix are determined by 
+, where the elements of the matrix are determined by
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset ERT
 status open
 
@@ -876,8 +1000,19 @@ phi_{j'} > $
 \end_inset
 
 .
- Alternatively, we can describe the reduced density matrix in term of something
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align left
+Alternatively, we can describe the reduced density matrix in term of something
  called a partial trace 
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset ERT
 status open
 
@@ -910,9 +1045,11 @@ The big ugly sum describing the reduced density matrix is doubtlessly a
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename Pictures/Reduced_density_matrix.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -920,7 +1057,7 @@ The big ugly sum describing the reduced density matrix is doubtlessly a
 \end_layout
 
 \begin_layout Standard
-The operation seen above is intresting in that we went irreversiblly from
+The operation seen above is interesting in that we went irreversibly from
  a pure entangled Bell state with zero entropy to a mixed state with non-zero
  entropy.
  In this way, the partial trace of an entangled state can be thought of
@@ -928,7 +1065,7 @@ The operation seen above is intresting in that we went irreversiblly from
  the entropy.
  This will generally occur whenever a partial trace is preformed on two
  entangled states.
- It is thusly apparent that the Louiville theorem discussed in the previous
+ It is thusly apparent that the Louisville theorem discussed in the previous
  section does not generally apply to the partial trace operation as entropy
  is not conserved.
  
@@ -939,14 +1076,14 @@ This shows us that a pure entangled state can appear to be a mixed unentangled
  state when we do not have information about one of the entangled systems.
  This concept sets up the framework for our understanding of decoherence.
  Decoherence is what occurs when a quantum superposition interacts with
- (and becomes entangled with) an unknown enviorment; this entanglement results
- in what appears to be the non-unitary transformation of quantum superpositions
- into classical mixtures.
+ (and becomes entangled with) an unknown environment; this entanglement
+ results in what appears to be the non-unitary transformation of quantum
+ superpositions into classical mixtures.
  Mathematically, this manifests itself as a spontaneous diagonalization
  of the density matrix.
- Decoherence forms the classical/quantum barrier as this is where the wierd
- effects of superposition and intereference come to die.
- (the reader should note that decoherence theory does not by itself solve
+ Decoherence forms the classical/quantum barrier as this is where the weird
+ effects of superposition and interference come to die.
+ (the reader should note that coherence theory does not by itself solve
  the so called 'measurement problem' of quantum mechanics because measurement
  results in a definite state rather than a mixed state; we are still left
  with the question of why and when the quantum state collapsed into a pure
@@ -986,6 +1123,8 @@ Psi >$
 \end_layout
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset ERT
 status open
 
@@ -1018,10 +1157,10 @@ We have thus added a small bit of functionality to the code which determines
 
 \begin_layout Standard
 \noindent
-\align block
+\align center
 \begin_inset Graphics
 	filename Pictures/Entropy_of_entanglement.png
-	width 5.1in
+	width 6in
 
 \end_inset
 
@@ -1033,16 +1172,26 @@ Conclusions and Future Directions
 \end_layout
 
 \begin_layout Standard
-We can see from the examples that the code greatly eases the algebraic and
- aritmetic difficulty in simulating quantum mechanical systems.
- The code therefore could be used both as a very powerful teaching tool.
- 
+Sympy's quantum code base so far has built into it a notion of Dirac notation,
+ the gate model of quantum computation, and the density matrix.
+ The quantum computational module has all of the structures important to
+ the gate model of quantum computation, and as such can simulate quantum
+ algorithms.
+ The density matrix object has the capability to be represented, acted upon
+ by operators, determine the entropy of a state, and determine the entropy
+ of entanglement.
+ In this way, the code is quite capable of modeling systems.
 \end_layout
 
 \begin_layout Standard
-The added code doubtlessly has potential for modeling certain quantum phenomena.
+We can see from the examples that the code greatly eases the algebraic and
+ arithmetic difficulty in simulating quantum mechanical systems.
+ The code therefore could be used as a very powerful teaching tool.
+ The added code doubtlessly has potential for modeling certain quantum phenomena.
  However, because the code is in its infancy, very few simulations of physical
  systems have been written using this framework.
+ When more examples using this code are written, the module will be of great
+ use for teaching quantum mechanics and quantum information concepts.
  
 \end_layout
 
@@ -1248,6 +1397,93 @@ lambda_{n} = 1$
 
 , the other eigenvalues must be zero.
  QED.
+\end_layout
+
+\begin_layout Subsection*
+The Zen of Python
+\end_layout
+
+\begin_layout Verse
+Beautiful is better than ugly.
+\end_layout
+
+\begin_layout Verse
+Explicit is better than implicit.
+\end_layout
+
+\begin_layout Verse
+Simple is better than complex.
+\end_layout
+
+\begin_layout Verse
+Complex is better than complicated.
+\end_layout
+
+\begin_layout Verse
+Flat is better than nested.
+\end_layout
+
+\begin_layout Verse
+Sparse is better than dense.
+ 
+\end_layout
+
+\begin_layout Verse
+Readability counts.
+\end_layout
+
+\begin_layout Verse
+Special cases aren't special enough to break the rules.
+\end_layout
+
+\begin_layout Verse
+Although practicality beats purity.
+ 
+\end_layout
+
+\begin_layout Verse
+Errors should never pass silently.
+ Unless explicitly silenced.
+\end_layout
+
+\begin_layout Verse
+In the face of ambiguity, refuse the temptation to guess.
+\end_layout
+
+\begin_layout Verse
+There should be one-- and preferably only one --obvious way to do it.
+\end_layout
+
+\begin_layout Verse
+Although that way may not be obvious at first unless you're Dutch.
+ 
+\end_layout
+
+\begin_layout Verse
+Now is better than never.
+ 
+\end_layout
+
+\begin_layout Verse
+Although never is often better than *right* now.
+\end_layout
+
+\begin_layout Verse
+If the implementation is hard to explain, it's a bad idea.
+ 
+\end_layout
+
+\begin_layout Verse
+If the implementation is easy to explain, it may be a good idea.
+ 
+\end_layout
+
+\begin_layout Verse
+Namespaces are one honking great idea -- let's do more of those!
+\end_layout
+
+\begin_layout Verse
+--The Zen of Python
 \end_layout
 
 \end_body
