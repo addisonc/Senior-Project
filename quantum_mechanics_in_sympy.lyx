@@ -57,9 +57,13 @@ Addison Cugini
 \begin_layout Abstract
 Because aspects of quantum mechanics are both difficult to understand and
  difficult algebraically, there is a need for software which symbolically
- .
- This paper shall discuss the code that has been added to a python-based
- CAS Sympy which 
+ simulates quantum mechanical phenomena.
+ To further this goal, code has been added to model the absraction of Dirac
+ notation and the density operator.
+ Additionally, a quantum computer simulation has been built using this abstracti
+on.
+ This paper shall discuss the code as well as any relevant physics that
+ has been added to a python based CAS Sympy.
 \end_layout
 
 \begin_layout Part
@@ -70,19 +74,27 @@ Introduction
 Students unfamiliar with quantum mechanics oftentimes find themselves getting
  lost in arithemetic and algebraic details and consequently have a hard
  time grasping the fundamental concepts behind the theory.
- For this reason, there is a need for software which simplifies the process
- by doing much of the meticulous algebra for the user.
+ For this reason, there is a need for software which simplifies the learning
+ process by doing much of the meticulous algebra for the user.
  There is no doubt that a symbolic engine would be highly useful for attaining
  this goal.
+ With this in mind, we have added code to an open source project called
+ Sympy, which extends the Python programming language to handle symbolic
+ computation.
+ The code we have added includes both a base layer which abstracts in code
+ the Dirac notation, as well as specific sub-modules which model certain
+ quantum systems.
 \end_layout
 
 \begin_layout Standard
 This paper shall discuss the quantum mechanics simulation code that has
- been added to the CAS Sympy during the 2010 Google Summer of Code and during
- my senior project.
- Code has been added which uses Dirac notation to simulate quantum computing
- and the density operator.
- These modules, as well as the underlying physical threories, shall be discussed.
+ been added to the Computer Algebra System (CAS) Sympy during the 2010 Google
+ Summer of Code and during my senior project.
+ This shall include a general introduction to the syntax and data structures
+ key to Sympy as well as a look at how this was used to implement Dirac
+ notation.
+ We shall then look at how this was used to implement a quantum computer
+ simulator and a notion of the density operator of statistical quantum mechanics.
 \end_layout
 
 \begin_layout Part
@@ -162,6 +174,26 @@ Sympy's symbolic engine takes advantage of object orientation (and inheritance
  for Mul, + for Add, and ** for Pow).
  The following is an inheritance diagram which shows some important classes:
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/sympy_inheritance.pdf
+	width 4in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/generalSympy.png
+	width 5.1in
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -259,6 +291,36 @@ As stated earlier, qubit objects are the state of interest for a quantum
 \end_layout
 
 \begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/compute1.png
+	width 5.1in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/compute2.png
+	width 5.1in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/compute3.png
+	width 5.1in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The quantum fourier transform (QFT) is a transformation that is the key
  part of Shor's number factoring algorithm, which provides an exponential
  speedup for the problem of finding the order of a number.
@@ -269,6 +331,26 @@ The quantum fourier transform (QFT) is a transformation that is the key
  it applies to, is known which implements this transformation.
  To get a sense of how this works, it would be helpful to see the Sympy
  module in action:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/QFT1.png
+	width 5.1in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/QFT2.png
+	width 5.1in
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Part
@@ -400,6 +482,26 @@ sum_{n} W_{n} a_{i}^{n} a_{j}^{n*}$
 
 \begin_layout Subsection
 Density Operators in Sympy
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/density1.png
+	width 5.1in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/density2.png
+	width 5.1in
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -572,6 +674,26 @@ s eigenvalues.
  The eigenvalues are then plugged into the equation for the Von Neumann
  entropy.
  This can be seen in the following code example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/entropy1.png
+	width 5.1in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/entropy2.png
+	width 5.1in
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -765,9 +887,11 @@ $
 \backslash
 rho_{reduced} = tr_{
 \backslash
-phi} 
+phi} | 
 \backslash
-Phi$
+Phi >< 
+\backslash
+Phi | $
 \end_layout
 
 \end_inset
@@ -783,6 +907,16 @@ The big ugly sum describing the reduced density matrix is doubtlessly a
  calculate the reduced density matrix of a tensor product of two-state systems
  by specifying which bits are to be considered the unobserved bits.
  This can be seen below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Pictures/Reduced_density_matrix.png
+	width 5.1in
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -834,10 +968,7 @@ ent of the system.
  of maximal entropy under the partial trace operation.
  This observation leads to the definition of an entanglement measure called
  the 'entropy of entanglement'.
- This measure defines the entanglement of two subsystems of 
-the state
-\lang english
-
+ This measure defines the entanglement of two subsystems of the state
 \begin_inset ERT
 status open
 
@@ -882,11 +1013,19 @@ Psi |) $
 We have thus added a small bit of functionality to the code which determines
  the entropy of entanglement between any specified qubit and the system
  as a whole.
- This is seen below
+ This is seen below:
 \end_layout
 
 \begin_layout Standard
-http://qwiki.stanford.edu/index.php/Entropy_of_Entanglement
+\noindent
+\align block
+\begin_inset Graphics
+	filename Pictures/Entropy_of_entanglement.png
+	width 5.1in
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Part
@@ -894,22 +1033,76 @@ Conclusions and Future Directions
 \end_layout
 
 \begin_layout Standard
-The addition of quantum computation simulation code to the code 
-\end_layout
-
-\begin_layout Standard
-The code that has been added to Sympy provides many useful bits of functionality
-, but the possible additions that could be made are nearly limitless.
+We can see from the examples that the code greatly eases the algebraic and
+ aritmetic difficulty in simulating quantum mechanical systems.
+ The code therefore could be used both as a very powerful teaching tool.
  
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Standard
+The added code doubtlessly has potential for modeling certain quantum phenomena.
+ However, because the code is in its infancy, very few simulations of physical
+ systems have been written using this framework.
+ 
+\end_layout
+
+\begin_layout Bibliography
 \start_of_appendix
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+Blum, Karl.
+ Density Matrix Theory and Applications.
+ Plenum Press, New York, 1996.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+Entropy of Entanglement
+\begin_inset Quotes erd
+\end_inset
+
+, Quantiki.
+ Web.
+ Accessed 1 Jun 2011.
+ http://www.quantiki.org/wiki/Entropy_of_entanglement.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-3"
+
+\end_inset
+
+Nielsen, Micheal.
+ Chuang, Isaac.
+ Quantum Computation and Quantum Information.
+ Cambridge Press, New York, 1996.
+\end_layout
+
+\begin_layout Standard
+Further information and downloads for Sympy can be found at Sympy.org
+\end_layout
+
+\begin_layout Subsection*
 Appendix A
 \end_layout
 
 \begin_layout Standard
-Simple 'proof' that 1 is the only non-zero eigenvalue for a pure state:
+Simple proof that 1 is the only non-zero eigenvalue for a pure state:
 \end_layout
 
 \begin_layout Standard
