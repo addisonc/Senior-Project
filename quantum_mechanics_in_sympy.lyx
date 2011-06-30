@@ -55,7 +55,7 @@ Addison Cugini
 \end_layout
 
 \begin_layout Date
-06/05/2011
+06/12/2011
 \end_layout
 
 \begin_layout Abstract
@@ -113,8 +113,8 @@ qapply
 
 \begin_layout Standard
 One such system which was implemented is a quantum computer.
- We shall then look at how this Dirac Notation was used to simulate the
- gate model of quantum computation.
+ We shall look at how Dirac Notation was used to simulate the gate model
+ of quantum computation.
  The quantum computing module inherits much of its capabilities from the
  main quantum base layer.
  We shall look at how this occurs and what capabilities the module currently
